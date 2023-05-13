@@ -1,0 +1,25 @@
+version: 0.0
+os: linux
+files: 
+  - source: /
+    destination: /home/ubuntu/helloworld
+permissions:
+  - object: /home/ubuntu/helloworld
+    owner: ubuntu
+    group: ubuntu
+hooks:
+  BeforeInstall:
+      - location: scripts/clean_instance.sh
+        timeout: 300
+        runas: ubuntu
+  AfterInstall:
+      - location: scripts/instance_os_dependencies.sh
+        runas: ubuntu
+  ApplicationStop:
+      - location: scripts/stop_app.sh
+        timeout: 300
+        runas: ubuntu
+  ApplicationStart:
+      - location: scripts/run.sh
+        timeout: 1000
+        runas: ubuntu
